@@ -1,9 +1,12 @@
-import numpy as np
-import polars as pl
+from typing import List, Optional
+
 from importlib import resources
 
+import numpy as np
+import polars as pl
 
-def _load_dataset(filename:str, **kwargs):
+
+def _load_dataset(filename: str, columns: Optional[List] = None) -> pl.DataFrame:
     """
     Load a dataset from analogy.data
 
@@ -14,15 +17,15 @@ def _load_dataset(filename:str, **kwargs):
 
     Returns:
     -------
-      Dataframe 
+      Dataframe
     """
     with resources.path("analogy.data", filename) as df:
-       return pl.read_csv(df, raise_if_empty=True, **kwargs)
+        return pl.read_csv(df, raise_if_empty=True, columns=columns)
 
 
-def load_sample_data(**kwargs):
+def load_sample_data(columns: Optional[List] = None) -> pl.DataFrame:
     """
-    Load data that is part of the analogy package. This data set comes from simulated data from 
+    Load data that is part of the analogy package. This data set comes from simulated data from
     Neil Cockburn. This data is used for examples on analogy.readthedocs
 
     Args:
@@ -54,9 +57,8 @@ def load_sample_data(**kwargs):
     -------
     DataFrame
         Returns a pandas DataFrame.
-    
+
     Examples:
     --------
     """
-    return _load_dataset("sample.csv", **kwargs)
-
+    return _load_dataset("sample.csv", columns=columns)

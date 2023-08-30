@@ -1,4 +1,4 @@
-.PHONY: clean build docs help
+.PHONY: clean build codestyle docs help
 .DEFAULT_GOAL := help
 
 PYTHONPATH := `pwd`
@@ -41,8 +41,8 @@ test: ## run the tests
 	PYTHONPATH=$(PYTHONPATH) poetry run pytest
 
 lint: ## run the linting tools poetry run pre-commit run --all-files
-	poetry run flake8 src --count --show-source --statistics
-	poetry run pylint src -ry
+	poetry run isort --settings-path pyproject.toml ./
+	poetry run black --config pyproject.toml ./
 	poetry run mypy src
 
 check: ## run the tests and linting tools
