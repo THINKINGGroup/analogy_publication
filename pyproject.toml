@@ -1,0 +1,95 @@
+[tool.poetry]
+name = "analogy"
+version = "0.0.1"
+description = "A python CLI application for analogy."
+repository = "https://github.com/aditya02acharya/analogy_publication"
+authors = ["aditya02acharya <aditya02acharya@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+classifiers=[
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = "^0.4.1"
+pandas = "^2.0.3"
+polars = "^0.18.15"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+
+[tool.poetry.group.lint.dependencies]
+black = "^22.3.0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+pylint = "^2.13.8"
+mypy = "^0.961"
+pre-commit = "^2.19.0"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.3.0"
+mkdocstrings = "^0.19.0"
+mkdocstrings-python = "^0.7.1"
+mkdocs-material = "^8.3.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+black = "^22.3.0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+pylint = "^2.13.8"
+mypy = "^0.961"
+pre-commit = "^2.19.0"
+mkdocs = "^1.3.0"
+mkdocstrings = "^0.19.0"
+mkdocstrings-python = "^0.7.1"
+mkdocs-material = "^8.3.9"
+
+[tool.poetry.scripts]
+analogy = "analogy.main:app"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+norecursedirs =["hooks", "*.egg", ".eggs", "dist", "build", "docs", ".tox", ".git", "__pycache__"]
+doctest_optionflags = ["NUMBER", "NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
+
+# Extra options:
+addopts = [
+  "--strict-markers",
+  "--tb=short",
+  "--doctest-modules",
+  "--doctest-continue-on-failure",
+]
+
+[tool.coverage.run]
+source = ["tests"]
+
+[tool.isort]
+profile = "black"
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__ == .__main__.:"
+]
+
+[tool.mypy]
+python_version = 3.9
+# warn_return_any = true
+disallow_untyped_defs = true
+warn_unused_configs = true
+ignore_missing_imports = true
