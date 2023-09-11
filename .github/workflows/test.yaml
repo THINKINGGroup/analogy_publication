@@ -31,7 +31,7 @@ jobs:
       - name: Install test environment
         run: poetry install --extras=test
       - name: Run tests and collect coverage
-        run: poetry run pytest
+        run: poetry run pytest --cov-report=html --cov=src tests/
       - name: Generate JSON coverage report
         run: poetry run coverage json
       - name: Upload report to codecov
