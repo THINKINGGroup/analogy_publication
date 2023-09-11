@@ -38,7 +38,7 @@ clean:  ## remove all build, testing, and static documentation files
 	rm -fr site
 
 test: ## run the tests
-	PYTHONPATH=$(PYTHONPATH) poetry run pytest
+	PYTHONPATH=$(PYTHONPATH) poetry run pytest --cov-report=html --cov=src tests/
 
 lint: ## run the linting tools poetry run pre-commit run --all-files
 	poetry run isort --settings-path pyproject.toml ./
