@@ -1,3 +1,5 @@
+from typing import List
+
 import typer
 
 from analogy import __version__
@@ -13,7 +15,14 @@ def version() -> None:
 
 
 @app.command()
-def analyse(filepath: str, result_dest: str) -> None:
+def analyse(
+    filepath: str,
+    result_dest: str,
+    startdate: str,
+    enddate: str,
+    conditions: List[str],
+    demography: List[str],
+) -> None:
     """
     Run the incidence prevalence analysis.
     """

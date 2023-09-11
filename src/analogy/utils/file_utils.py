@@ -1,4 +1,8 @@
+from typing import List
+
 import os
+
+import pandas as pd
 
 
 def check_is_file(filepath: str) -> bool:
@@ -86,3 +90,18 @@ def do_checks(filepath: str, destination_path: str) -> None:
 
     status = check_is_directory(destination_path)
     assert status == True, "The result destination folder doesn't exist. \n"
+
+
+def file_loader(filepath: str, usecols: List[str] = None) -> pd.DataFrame:
+    """
+    Read file from user defined path and load to memory.
+
+    Args:
+    ----
+      filepath (string): path for the datafile as string.
+
+    Returns:
+    -------
+      LazyFrame
+    """
+    return pd.read_csv(filepath, usecols=usecols)

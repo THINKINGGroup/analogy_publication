@@ -3,34 +3,34 @@ from typing import List, Optional
 from importlib import resources
 
 import numpy as np
-import polars as pl
+import pandas as pd
 
 
-def _load_dataset(filename: str, columns: Optional[List] = None) -> pl.DataFrame:
+def _load_dataset(filename: str, columns: Optional[List] = None) -> pd.DataFrame:
     """
     Load a dataset from analogy.data
 
     Args:
     ----
       filename (string): name of the file to load, for example sample.csv
-      columns (list): list of column indices (starting at zero) or a list of column names to use.
+      columns (list): list of column names to use.
 
     Returns:
     -------
       Dataframe
     """
     with resources.path("analogy.data", filename) as df:
-        return pl.read_csv(df, raise_if_empty=True, columns=columns)
+        return pd.read_csv(df, usecols=columns)
 
 
-def load_sample_data(columns: Optional[List] = None) -> pl.DataFrame:
+def load_sample_data(columns: Optional[List] = None) -> pd.DataFrame:
     """
     Load data that is part of the analogy package. This data set comes from simulated data from
     Neil Cockburn. This data is used for examples on analogy.readthedocs
 
     Args:
     ----
-      columns (list): list of column indices (starting at zero) or a list of column names to use.
+      columns (list): list of column names to use.
 
     Notes:
     -----
