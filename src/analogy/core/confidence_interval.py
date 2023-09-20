@@ -12,9 +12,7 @@ class BaseInterval(ABC):
     Abstract base class for confidence interval calculation.
     """
 
-    def __init__(
-        self, numerator: Union[int, float], denominator: Union[int, float], alpha: float = 0.05
-    ):
+    def __init__(self, alpha: float = 0.05):
         """
         Args:
         ----
@@ -23,16 +21,26 @@ class BaseInterval(ABC):
           alpha (float): the confidence level required for the confidence interval. Default: 0.05 (95%).
         """
         super().__init__()
-        self.numerator = numerator
-        self.denominator = denominator
         self.alpha = alpha
 
     @abstractmethod
-    def lower_bound(self) -> float:
+    def lower_bound(self, numerator: Union[int, float], denominator: Union[int, float]) -> float:
+        """
+        Args:
+        ----
+          numerator (int | float): the number of observed event.
+          denominator (int | float): the denominator population at risk. Can be count or time.
+        """
         pass
 
     @abstractmethod
-    def upper_bound(self) -> float:
+    def upper_bound(self, numerator: Union[int, float], denominator: Union[int, float]) -> float:
+        """
+        Args:
+        ----
+          numerator (int | float): the number of observed event.
+          denominator (int | float): the denominator population at risk. Can be count or time.
+        """
         pass
 
 
@@ -60,9 +68,7 @@ class ChiSquaredConfidenceInterval(BaseInterval):
       χ2_upper is the 100(1-alpha/2)th percentile value from the χ2 distribution with 2O+2 degrees of freedom
     """
 
-    def __init__(
-        self, numerator: Union[int, float], denominator: Union[int, float], alpha: float = 0.05
-    ):
+    def __init__(self, alpha: float = 0.05):
         """
         Args:
         ----
@@ -70,16 +76,20 @@ class ChiSquaredConfidenceInterval(BaseInterval):
           denominator (int | float | None): the denominator population at risk. Can be count or time.
           alpha (float): the confidence level required for the confidence interval. Default: 0.05 (95%).
         """
-        super().__init__(numerator, denominator, alpha)
+        super().__init__(alpha)
 
-    def upper_bound(self) -> float:
-        b = chi2.ppf(1 - (self.alpha / 2), 2 * self.numerator + 2) / 2
-        upper_ci: float = b / self.denominator
+    def upper_bound(self, numerator: Union[int, float], denominator: Union[int, float]) -> float:
+        if numerator is None:
+            return 0.0
+        b = chi2.ppf(1 - (self.alpha / 2), 2 * numerator + 2) / 2
+        upper_ci: float = b / denominator
         return upper_ci
 
-    def lower_bound(self) -> float:
-        b = chi2.ppf((self.alpha / 2), (self.numerator * 2)) / 2
-        lower_ci: float = b / self.denominator
+    def lower_bound(self, numerator: Union[int, float], denominator: Union[int, float]) -> float:
+        if numerator is None:
+            return 0.0
+        b = chi2.ppf((self.alpha / 2), (numerator * 2)) / 2
+        lower_ci: float = b / denominator
         return lower_ci
 
 
@@ -116,9 +126,7 @@ class ByarsConfidenceInterval(BaseInterval):
       z is the 100(1-alpha/2)th percentile value from the Standard Normal distribution.
     """
 
-    def __init__(
-        self, numerator: Union[int, float], denominator: Union[int, float], alpha: float = 0.05
-    ):
+    def __init__(self, alpha: float = 0.05):
         """
         Args:
         ----
@@ -126,33 +134,35 @@ class ByarsConfidenceInterval(BaseInterval):
           denominator (int | float): the denominator population at risk. Can be count or time.
           alpha (float): the confidence level required for the confidence interval. Default: 0.05 (95%).
         """
-        super().__init__(numerator, denominator, alpha)
+        super().__init__(alpha)
 
-        self.chi_squared = ChiSquaredConfidenceInterval(numerator, denominator)
+        self.chi_squared = ChiSquaredConfidenceInterval(alpha)
 
-    def upper_bound(self) -> float:
-
-        if self.numerator < 10:
-            upper_ci = self.chi_squared.upper_bound()
-        else:
-            z = ndtri(1 - self.alpha / 2)
-            c = 1 / (9 * (self.numerator + 1))
-            b = 3 * (np.sqrt(self.numerator + 1))
-            upper_o = (self.numerator + 1) * ((1 - c + (z / b)) ** 3)
-            upper_ci = upper_o / self.denominator
-        return upper_ci
-
-    def lower_bound(self) -> float:
-
-        if self.numerator is None:
+    def upper_bound(self, numerator: Union[int, float], denominator: Union[int, float]) -> float:
+        if numerator is None:
             return 0.0
 
-        if self.numerator < 10:
-            lower_ci = self.chi_squared.lower_bound()
+        if numerator < 10:
+            upper_ci = self.chi_squared.upper_bound(numerator, denominator)
         else:
             z = ndtri(1 - self.alpha / 2)
-            c = 1 / (9 * self.numerator)
-            b = 3 * np.sqrt(self.numerator)
-            lower_o = self.numerator * ((1 - c - (z / b)) ** 3)
-            lower_ci = lower_o / self.denominator
+            c = 1 / (9 * (numerator + 1))
+            b = 3 * (np.sqrt(numerator + 1))
+            upper_o = (numerator + 1) * ((1 - c + (z / b)) ** 3)
+            upper_ci = upper_o / denominator
+        return upper_ci
+
+    def lower_bound(self, numerator: Union[int, float], denominator: Union[int, float]) -> float:
+
+        if numerator is None:
+            return 0.0
+
+        if numerator < 10:
+            lower_ci = self.chi_squared.lower_bound(numerator, denominator)
+        else:
+            z = ndtri(1 - self.alpha / 2)
+            c = 1 / (9 * numerator)
+            b = 3 * np.sqrt(numerator)
+            lower_o = numerator * ((1 - c - (z / b)) ** 3)
+            lower_ci = lower_o / denominator
         return lower_ci

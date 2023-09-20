@@ -9,6 +9,7 @@ def format_datatypes(
     data: pd.DataFrame,
     condition_cols: List[str],
     demography_cols: List[str] = None,
+    patient_follow_up_cols: List[str] = None,
     date_format: str = "ISO8601",
 ) -> pd.DataFrame:
     """
@@ -22,21 +23,16 @@ def format_datatypes(
     Returns:
         data (DataFrame): study data as pandas dataframe with formatted columns.
     """
-
-    # check data
-    assert isinstance(data, pd.DataFrame), "dataset should be pandas dataframe type."
-    assert len(condition_cols) >= 1, "Provide atleast one condition column."
-    non_intersect = set(data.columns).symmetric_difference(condition_cols)
-    assert len(non_intersect) > 0, f"{non_intersect}, columns not found in the dataset."
     if demography_cols is not None:
-        non_intersect_demo = set(data.columns).symmetric_difference(demography_cols)
-        assert (
-            len(non_intersect_demo) > 0
-        ), f"{non_intersect_demo}, columns not found in the dataset."
         data[demography_cols] = data[demography_cols].astype("category")
 
+    data[patient_follow_up_cols] = data[patient_follow_up_cols].apply(
+        pd.to_datetime,
+        format=date_format,
+    )
     data[condition_cols] = data[condition_cols].apply(
-        pd.to_datetime, format=date_format, errors="coerce"
+        pd.to_datetime,
+        format=date_format,
     )
 
     return data

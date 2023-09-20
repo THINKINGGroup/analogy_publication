@@ -102,6 +102,24 @@ def file_loader(filepath: str, usecols: List[str] = None) -> pd.DataFrame:
 
     Returns:
     -------
-      LazyFrame
+      DataFrame
     """
     return pd.read_csv(filepath, usecols=usecols)
+
+
+def save_dataframe(data: pd.DataFrame, filepath: str, filename: str, index: bool = False) -> None:
+    """
+    Write pandas dataframe to disk.
+
+    Args:
+    ----
+      filepath (string): path for the datafile as string.
+      filename (string): name of the file to store in the disk.
+      index (bool): save the index of the dataframe. Default: False
+
+    Returns:
+    -------
+      None
+    """
+    filename = os.path.join(filepath, filename)
+    data.to_csv(filename, index=index)
