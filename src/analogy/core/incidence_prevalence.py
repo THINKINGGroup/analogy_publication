@@ -1,10 +1,10 @@
 from typing import List, Tuple, Type, Union
 
-from abc import ABC
 from datetime import datetime
 
 import pandas as pd
 from dateutil.relativedelta import relativedelta
+from tqdm import tqdm
 
 from analogy.core.confidence_interval import BaseInterval, ByarsConfidenceInterval
 from analogy.core.preprocessor import convert_str_to_datetime, format_datatypes
@@ -149,7 +149,8 @@ class Incidence:
         Function definition for overall incidence rate calculation.
         """
         overall_df_list = []
-        for condition_col in self.conditions:
+        print("Calculating overall incidence rate.")
+        for condition_col in tqdm(self.conditions):
             df_list = []
             current_period = self.study_start_date
             while current_period < self.study_end_date:
@@ -188,7 +189,8 @@ class Incidence:
         Function definition for subgroup incidence rate calculation.
         """
         overall_df_list = []
-        for condition_col in self.conditions:
+        print("Calculating incidence rate by subgroup demography.")
+        for condition_col in tqdm(self.conditions):
             for demo in self.demography:
                 subgroup_list = []
                 for name, group in self.data.groupby(demo, observed=False):
@@ -291,7 +293,7 @@ class Prevalence:
         self.person_years = person_years
         self.increment_by_months = increment_by_months
         self.dateformat = date_format
-        self.confidence_method = confidence_method()
+        self.confidence_method = confidence_method(alpha=alpha)
 
     def point_prevalence(
         self,
@@ -362,7 +364,8 @@ class Prevalence:
         Function definition for overall incidence rate calculation.
         """
         overall_df_list = []
-        for condition_col in self.conditions:
+        print("Calculating overall prevalence proportions.")
+        for condition_col in tqdm(self.conditions):
             df_list = []
             current_period = self.study_start_date
             while current_period < self.study_end_date:
@@ -398,7 +401,8 @@ class Prevalence:
         Function definition for subgroup incidence rate calculation.
         """
         overall_df_list = []
-        for condition_col in self.conditions:
+        print("Calculating prevalence proportions by subgroup demography.")
+        for condition_col in tqdm(self.conditions):
             for demo in self.demography:
                 subgroup_list = []
                 for name, group in self.data.groupby(demo, observed=False):

@@ -104,7 +104,7 @@ def file_loader(filepath: str, usecols: List[str] = None) -> pd.DataFrame:
     -------
       DataFrame
     """
-    return pd.read_csv(filepath, usecols=usecols)
+    return pd.read_csv(filepath, usecols=usecols, low_memory=False)
 
 
 def save_dataframe(data: pd.DataFrame, filepath: str, filename: str, index: bool = False) -> None:
