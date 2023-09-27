@@ -36,6 +36,11 @@ Run the command below to start the analysis.
 ```bash
 analogy incprev ./src/analogy/data/sample.csv . "2001-01-01 00:00:00.0" "2021-12-31 00:00:00.0" "%Y-%m-%d %H:%M:%S.%f" START_DATE END_DATE 1000 12
 ```
+Running the command above will be followed up with the prompts below. 
+```bash
+Enter the list of conditions columns to analyse (col1, col2, ...): CONDITION
+Enter the list of demography columns for subgroup analyse or leave empty if none (col1, col2, ...): SEX, ETHNICITY
+```
 The command expects the following:
 1. path to the .csv dataset: **./src/analogy/data/sample.csv**
 2. the destination folder to store outputs: **.** (current directory)
@@ -46,5 +51,7 @@ The command expects the following:
 7. Patient follow-up end date column in dataset: **END_DATE**
 8. Pre person years scale for the result reporting: **1000**
 9. Regualr interval at witch incidence and prevalence to be calculated: **12**
+10. List of condition to calculate incidence and prevalence on: **CONDITION**
+11. List of demography variables for subgroup analysis: **SEX, ETHNICITY**
 
 ## FAQ
