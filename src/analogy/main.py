@@ -20,16 +20,34 @@ def version() -> None:
 def incprev(
     filepath: str,
     result_dest: str,
-    startdate: str,
-    enddate: str,
+    studystart: str,
+    studyend: str,
     dateformat: str,
-    patientstartcol: str,
-    patientendcol: str,
+    startdatecol: str,
+    enddatecol: str,
     personyears: int,
     increment: int,
 ) -> None:
     """
     Run the incidence prevalence analysis.
+
+    FILEPATH: The location of your csv data file, please provide absolute path.
+
+    RESULT_DEST: The location to save analysis outputs to, please provide absolute path.
+
+    STUDYSTART: The start date of your study, i.e. the first date on which patients can contribute persontime and events. This will define the date to calculate point prevalence on and the beginning of the incidence calculation period.
+
+    STUDYEND: The end date of your study, i.e. the last date on which patients can contribute persontime and events. This will define the end date to calculate the last incidence period, but will not affect point prevalence dates which are defined using STARTDATE and increment.
+
+    DATEFORMAT: Describe the format of data describing dates. Two key variations need to be described; the order of dates and the units displayed. For example, %Y-%m-%d describes the DATEFORMAT as Year-month-day, in that order, with no hour or minute components.
+
+    STARTDATECOL: The date on which an individual patient becomes eligible to take part in the study and contribute patient-time or events, independently from STARTDATE.
+
+    ENDDATECOL: The date on which an individual patient is no longer eligible to take part in the study and contribute patient-time or events.
+
+    PERSONYEARS: The scale to report results in e.g. per 1000 patients, per 100 patients.  Same for both denominators.
+
+    INCREMENT: The number of months between calculations e.g. between each point prevalence calculation, or the length of the period in months for each incidence calculation.
     """
     conditions_text = input("Enter the list of conditions columns to analyse (col1, col2, ...): ")
     demography_text = input(
@@ -37,13 +55,13 @@ def incprev(
     )
     do_checks(filepath, result_dest)
     args = format_input(
-        startdate=startdate,
-        enddate=enddate,
+        startdate=studystart,
+        enddate=studyend,
         conditions=conditions_text,
         demography=demography_text,
         dateformat=dateformat,
-        patientstartcol=patientstartcol,
-        patientendcol=patientendcol,
+        patientstartcol=startdatecol,
+        patientendcol=enddatecol,
         personyears=personyears,
         increment=increment,
     )
