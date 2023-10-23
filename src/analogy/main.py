@@ -1,5 +1,7 @@
 from typing import List
 
+import numpy as np
+import pandas as pd
 import typer
 
 from analogy import __version__
@@ -76,5 +78,13 @@ def incprev(
     run_prevalence(df, args, result_dest)
 
 
+def set_seed() -> None:
+    """Function to initialise random generator with intial seed
+    application wide for reproducible research.
+    """
+    np.random.seed(42)
+
+
 if __name__ == "__main__":
+    set_seed()
     app()
