@@ -50,7 +50,7 @@ The command expects the following:
 6. Patient follow-up start date column in dataset: **START_DATE**
 7. Patient follow-up end date column in dataset: **END_DATE**
 8. Per person years scale for the result reporting: **1000**
-9. Regular interval at witch incidence and prevalence to be calculated: **12**
+9. Regular interval at which incidence and prevalence to be calculated: **12**
 10. List of condition to calculate incidence and prevalence on: **CONDITION**
 11. List of demography variables for subgroup analysis: **SEX, ETHNICITY**
 
