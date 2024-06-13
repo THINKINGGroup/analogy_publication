@@ -6,7 +6,7 @@
 These instructions will get you a copy of the project up and running on your local machine.
 
 ### Prerequisites
-The project requires python 3.9 or above. We recommend using Anaconda for open source python distribution. Goto https://www.anaconda.com/ for installation.
+The project requires python 3.9 or above. We recommend using Anaconda for open source python distribution. Go to https://www.anaconda.com/ for installation.
 
 ### Installing
 
@@ -27,7 +27,7 @@ python -m pip install .
 
 ### Running the application
 
-To see all available argument, use the command below.
+To see all available arguments, use the command below.
 ```bash
 analogy incprev --help
 ```
@@ -49,8 +49,8 @@ The command expects the following:
 5. Date formate in dataset and user provided: **%Y-%m-%d %H:%M:%S.%f**
 6. Patient follow-up start date column in dataset: **START_DATE**
 7. Patient follow-up end date column in dataset: **END_DATE**
-8. Pre person years scale for the result reporting: **1000**
-9. Regualr interval at witch incidence and prevalence to be calculated: **12**
+8. Per person years scale for the result reporting: **1000**
+9. Regular interval at witch incidence and prevalence to be calculated: **12**
 10. List of condition to calculate incidence and prevalence on: **CONDITION**
 11. List of demography variables for subgroup analysis: **SEX, ETHNICITY**
 
