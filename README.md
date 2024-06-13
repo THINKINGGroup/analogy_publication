@@ -54,4 +54,20 @@ The command expects the following:
 10. List of condition to calculate incidence and prevalence on: **CONDITION**
 11. List of demography variables for subgroup analysis: **SEX, ETHNICITY**
 
+### CSV File Format
+The command takes csv files as input and expects the following format:
+1. Each row should correspond to one observation
+2. Each column should represent one variable
+3. The first row should be a list of column names
+4. Each observation must have a start and end date
+
+   
 ## FAQ
+**Q: Where should I run the code blocks in the readme?**
+
+These should be run in the Python command line.
+
+
+**Q: Are column names necessary or do they need to be excluded?**
+
+Column names are necessary and the command line will take column names as inputs to identify observation start and end dates, conditions, and any subgroup analyses that are desired for stratified analysis.
